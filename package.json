@@ -1,0 +1,37 @@
+{
+  "name": "trale",
+  "displayName": "TRALE",
+  "description": "TRALE Syntax Highlight",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.95.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "trale",
+        "aliases": [
+          "TRALE",
+          "trale"
+        ],
+        "extensions": [
+          ".pl"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "trale",
+        "scopeName": "source.trale",
+        "path": "./syntaxes/trale.tmLanguage.json"
+      }
+    ]
+  },
+  "devDependencies": {
+    "js-yaml": "^4.1.0"
+  }
+}

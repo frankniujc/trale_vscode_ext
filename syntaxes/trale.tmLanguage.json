@@ -1,0 +1,435 @@
+{
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "TRALE",
+    "patterns": [
+        {
+            "include": "#comments"
+        },
+        {
+            "include": "#goal_macro_body"
+        },
+        {
+            "include": "#goal_call"
+        },
+        {
+            "include": "#statement"
+        }
+    ],
+    "repository": {
+        "comments": {
+            "patterns": [{
+                "name": "comment.line.percentage.trale",
+                "match": "(%+).*$"
+            }]
+        },
+
+        "statement": {
+            "name": "statement.trale",
+            "begin": "(?=([[:alpha:]_][[:alnum:]_]*))",
+            "end": "(\\.)",
+            "endCaptures": {
+                "1": {
+                    "name": "statement.end.trale"
+                }
+            },
+            "patterns": [
+                {
+                    "include": "#comments"
+                },
+                {
+                    "include": "#type_declaration"
+                },
+                {
+                    "include": "#lexical_entry"
+                },
+                {
+                    "include": "#goal_macro_declaration"
+                },
+                {
+                    "include": "#goal_macro_body"
+                },
+                {
+                    "include": "#grammar_rule"
+                },
+                {
+                    "include": "#lex_rule"
+                },
+                {
+                    "include": "#empty_category"
+                },
+                {
+                    "include": "#semantics"
+                }
+            ]
+        },
+
+        "grammar_rule": {
+            "name": "grammar-rule.declaration.trale",
+            "begin": "([[:alpha:]_][[:alnum:]_]*)\\s+(rule)",
+            "beginCaptures": {
+                "1": {"name": "entity.name.function.trale"},
+                "2": {"name": "storage.type.trale"}
+            },
+            "end": "(\\.)",
+            "captures": {
+                "1": {"name": "grammar-rule.declaration.end.trale"}
+            },
+            "patterns": [
+                {
+                    "include": "#grammar_rule_body"
+                },
+                {
+                    "include": "#grammar_rule_head"
+                }
+            ]
+        },
+        "grammar_rule_body": {
+            "name": "grammar-rule.body.trale",
+            "begin": "(cat>|sem_head>|goal>|sem_goal>)",
+            "beginCaptures": {
+                "1": {"name": "keyword.control.trale"}
+            },
+            "end": "(?=(cat>|sem_head>|goal>|sem_goal>|\\.))",
+            "patterns": [
+                {
+                    "include": "#comments"
+                },
+                {
+                    "include": "#macro_call"
+                },
+                {
+                    "include": "#goal_call"
+                },
+                {
+                    "include": "#variable"
+                },
+                {
+                    "include": "#feature"
+                },
+                {
+                    "include": "#type"
+                }
+            ]
+        },
+        "grammar_rule_head": {
+            "begin": "\\b",
+            "end": "(===>)",
+            "endCaptures": {
+                "1": {"name": "keyword.control.trale"}
+            },
+            "patterns": [
+                {
+                    "include": "#comments"
+                },
+                {
+                    "include": "#macro_call"
+                },
+                {
+                    "include": "#goal_call"
+                },
+                {
+                    "include": "#variable"
+                },
+                {
+                    "include": "#feature"
+                },
+                {
+                    "include": "#type"
+                }
+            ]
+        },
+
+        "type_declaration":{
+            "name": "type.declaration.trale",
+            "begin": "([[:alpha:]_][[:alnum:]_]*)(?=(\\s+(sub|intro)))",
+            "beginCaptures": {
+                "1": {
+                    "name": "entity.name.type.trale"
+                }
+            },
+            "end": "(\\.)",
+            "endCaptures": {
+                "1": {
+                    "name": "type.declaration.end.trale"
+                }
+            },
+            "patterns": [
+                {
+                    "include": "#type_sub_declaration"
+                },
+                {
+                    "include": "#type_intro_declaration"
+                }
+            ]
+        },
+        "type_sub_declaration": {
+            "name": "type.sub.declaration.trale",
+            "begin": "(sub)\\s+(\\[)",
+            "beginCaptures": {
+                "1": {
+                    "name": "storage.function.sub.trale"
+                },
+                "2": {
+                    "name": "type.sub.declaration.end.trale"
+                }
+            },
+            "end": "(\\])",
+            "patterns": [{
+                "include": "#feature"
+            }]
+        },
+        "type_intro_declaration": {
+            "name": "type.intro.declaration.trale",
+            "begin": "(intro)\\s+(\\[)",
+            "beginCaptures": {
+                "1": {
+                    "name": "storage.function.intro.trale"
+                },
+                "2": {
+                    "name": "type.intro.declaration.end.trale"
+                }
+            },
+            "end": "(\\])",
+            "patterns": [{
+                "include": "#feature"
+            }]
+        },
+
+        "lexical_entry": {
+            "begin": "('?[\\w|\\\\']+'?)\\s+(--->)",
+            "beginCaptures": {
+                "1": {"name": "entity.name.class.lexical_entry.trale"},
+                "2": {"name": "keyword.control.trale"}
+            },
+            "end": "(\\.)",
+            "endCaptures": {
+                "1": {"name": "lexical-entry.declaration.end.trale"}
+            },
+            "patterns": [
+                {
+                    "include": "#comments"
+                },
+                {
+                    "include": "#macro_call"
+                },
+                {
+                    "include": "#goal_call"
+                },
+                {
+                    "include": "#variable"
+                },
+                {
+                    "include": "#feature"
+                },
+                {
+                    "include": "#type"
+                }
+            ]
+        },
+
+        "empty_category": {
+            "begin": "(empty)",
+            "beginCaptures": {
+                "1": {"name": "keyword.control.empty.trale"}
+            },
+            "end": "(\\.)",
+            "endCaptures": {
+                "1": {"name": "empty.decalaration.end.trale"}
+            },
+            "patterns": [
+                {
+                    "include": "#comments"
+                },
+                {
+                    "include": "#macro_call"
+                },
+                {
+                    "include": "#goal_call"
+                },
+                {
+                    "include": "#variable"
+                },
+                {
+                    "include": "#feature"
+                },
+                {
+                    "include": "#type"
+                }
+            ]
+        },
+
+        "goal_call": {
+            "name": "goal.call.trale",
+            "begin": "([[:alpha:]_][[:alnum:]_]*)(?=(\\())",
+            "beginCaptures": {
+                "1": {"name": "entity.name.function.trale"}
+            },
+            "end": "(\\))",
+            "patterns": [
+                {
+                    "include": "#macro_call"
+                },
+                {
+                    "include": "#goal_call"
+                },
+                {
+                    "include": "#variable"
+                },
+                {
+                    "include": "#feature"
+                },
+                {
+                    "include": "#type"
+                }
+            ]
+        },
+
+        "macro_call": {
+            "begin": "(\\@)([[:alpha:]_][[:alnum:]_]*)",
+            "beginCaptures": {
+                "1": {"name": "keyword.control.macro.trale"},
+                "2": {"name": "entity.name.function.trale"}
+            },
+            "end": "(?=(,|]|\\.|\\b))",
+            "patterns": [
+                {
+                    "include": "#macro_call"
+                },
+                {
+                    "include": "#goal_call"
+                },
+                {
+                    "include": "#variable"
+                },
+                {
+                    "include": "#feature"
+                },
+                {
+                    "include": "#type"
+                }
+            ]
+        },
+
+        "parameter_declaration": {
+            "name": "parameter.declaration.trale",
+            "begin": "(\\()",
+            "end": "(\\))\\s+(?=(macro|if|:-))",
+            "patterns": [
+                {
+                    "include": "#macro_call"
+                },
+                {
+                    "include": "#variable"
+                },
+                {
+                    "include": "#feature"
+                },
+                {
+                    "include": "#type"
+                }
+            ]
+        },
+
+        "goal_macro_declaration": {
+            "begin": "([[:alpha:]_][[:alnum:]_]*)(?=(\\())",
+            "beginCaptures": {
+                "1": {"name": "support.function.trale"}
+            },
+            "end": "(?=(macro|if|:-))",
+            "patterns": [{
+                "include": "#parameter_declaration"
+            }]
+        },
+        "goal_macro_body": {
+            "begin": "(macro|if|:-)",
+            "beginCaptures": {
+                "1": {
+                    "name": "keyword.declaration.function.trale"
+                }
+            },
+            "end": "(\\.)",
+            "endCaptures": {
+                "1": {
+                    "name": "punctuation.definition.arguments.end.trale"
+                }
+            },
+            "patterns": [
+                {
+                    "include": "#comments"
+                },
+                {
+                    "include": "#macro_call"
+                },
+                {
+                    "include": "#goal_call"
+                },
+                {
+                    "include": "#constant"
+                },
+                {
+                    "include": "#cut"
+                },
+                {
+                    "include": "#variable"
+                },
+                {
+                    "include": "#feature"
+                },
+                {
+                    "include": "#type"
+                }
+            ]
+        },
+
+        "semantics": {
+            "name": "semantics.decalaration.trale",
+            "match": "(semantics)\\s+(([[:alpha:]_][[:alnum:]_]*))(\\.)",
+            "captures": {
+                "1": {"name": "keyword.control.semantics.trale"},
+                "2": {"name": "entity.name.function.semantics.trale"},
+                "3": {"name": "semantics.decalaration.end.trale"}
+            }
+        },
+
+        "feature": {
+            "name": "feature.trale",
+            "begin": "([[:alpha:]_][[:alnum:]_]*)\\s*(:)",
+            "beginCaptures": {
+                "1": {"name": "support.type.trale"},
+                "2": {"name": "feature.separator.trale"}
+            },
+            "end": "(?=(,|]|\\.|\\b))",
+            "patterns": [
+                {
+                    "include": "#macro_call"
+                },
+                {
+                    "include": "#variable"
+                },
+                {
+                    "include": "#type"
+                }
+            ]
+        },
+        "constant": {
+            "match": "\\b(true|bot|top)\\b",
+            "name": "constant.language.trale"
+        },
+        "cut": {
+            "match": "(!)",
+            "name": "keyword.other.cut.trale"
+        },
+        "variable": {
+            "name": "variable.parameter.uppercase.trale",
+            "match": "\\b([A-Z]\\w*)\\b"
+        },
+        "type": {
+          "match": "\\b(\\w+)\\b",
+          "name": "type.name.trale"
+        },
+        "string_pattern": {
+            "include": "#variable"
+        }
+    },
+    "scopeName": "source.trale"
+}
