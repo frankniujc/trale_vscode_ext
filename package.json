@@ -33,5 +33,6 @@
   },
   "devDependencies": {
     "js-yaml": "^4.1.0"
-  }
+  },
+  "repository": "https://github.com/frankniujc/trale_vscode_ext"
 }
